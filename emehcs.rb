@@ -75,10 +75,11 @@ class Emehcs < EmehcsBase
     end
     if x[-2..] == SPECIAL_STRING_SUFFIX # 純粋文字列 :s
       x
-    elsif x[0] == FUNCTION_DEF_PREFIX   # 関数定義
+    elsif x[0] == FUNCTION_DEF_PREFIX   # 関数束縛
       @env[name] = pop_raise; name
-    elsif x[0] == VARIABLE_DEF_PREFIX   # (3) 変数定義のときは、Array を実行する
-      @env[name] = func?(pr.force) ? parse_run(pr.force) : pr.force; nil
+    elsif x[0] == VARIABLE_DEF_PREFIX   # (3) 変数束縛のときは、Array を実行する
+      @env[name] = func?(pr.force) ? parse_run(pr.force) : pr.force
+      em ? name : nil # REPL に変数名を出力する
     elsif @env[x].is_a?(Array)          # (2) この時も code の最後かつ関数なら実行する
       ________________________ = b ? parse_run(co.force) : co.force
     else                                # x が変数名
