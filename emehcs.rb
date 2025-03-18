@@ -42,7 +42,7 @@ class Emehcs < EmehcsBase
   include Parse2Core
   def run(str_code) = (@stack = []; run_after(parse_run(parse2_core(str_code)).to_s))
 
-  # メインルーチンの改善
+  # メインルーチンの改善、code は Array
   def parse_run(code)
     case code
     in [] then @stack.pop
@@ -76,7 +76,7 @@ class Emehcs < EmehcsBase
     if x[-2..] == SPECIAL_STRING_SUFFIX # 純粋文字列 :s
       x
     elsif x[0] == FUNCTION_DEF_PREFIX   # 関数定義
-      @env[name] = pop_raise; nil
+      @env[name] = pop_raise; name
     elsif x[0] == VARIABLE_DEF_PREFIX   # (3) 変数定義のときは、Array を実行する
       @env[name] = func?(pr.force) ? parse_run(pr.force) : pr.force; nil
     elsif @env[x].is_a?(Array)          # (2) この時も code の最後かつ関数なら実行する
