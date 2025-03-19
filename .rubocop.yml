@@ -63,3 +63,6 @@ Metrics/ParameterLists:
 
 Lint/LiteralAsCondition:
   Enabled: false
+
+Style/AccessModifierDeclarations:
+  Enabled: false
