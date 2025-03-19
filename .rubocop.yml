@@ -60,3 +60,6 @@ Metrics/ParameterLists:
   CountKeywordArgs: false
   CountParameters: false
   MaxOptionalParameters: 5
+
+Lint/LiteralAsCondition:
+  Enabled: false

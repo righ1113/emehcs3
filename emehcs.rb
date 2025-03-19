@@ -64,26 +64,13 @@ class Emehcs < EmehcsBase
   def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
 
   # String のとき
-  def parse_string(x, em, name = x[1..], db = [x, @env[x]], b = em && func?(@env[x]),
-                   co = Delay.new { Const.deep_copy(@env[x]) },
-                   pr = Delay.new { pop_raise })
-    db.each do |y|
-      if EMEHCS_FUNC_TABLE.key? y       # primitive関数 の実行
-        em ? send(EMEHCS_FUNC_TABLE[y]) : @stack.push(y)
-        return nil
-      end
-    end
-    if x[-2..] == SPECIAL_STRING_SUFFIX # 純粋文字列 :s
-      x
-    elsif x[0] == FUNCTION_DEF_PREFIX   # 関数束縛
-      @env[name] = pop_raise; name
-    elsif x[0] == VARIABLE_DEF_PREFIX   # (3) 変数束縛のときは、Array を実行する
-      @env[name] = func?(pr.force) ? parse_run(pr.force) : pr.force
-      em ? name : nil # REPL に変数名を出力する
-    elsif @env[x].is_a?(Array)          # (2) この時も code の最後かつ関数なら実行する
-      ________________________ = b ? parse_run(co.force) : co.force
-    else                                # x が変数名
-      @env[x]
+  def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
+    db.each { |y| (em ? send(EMEHCS_FUNC_TABLE[y]) : @stack.push(y); return nil) if EMEHCS_FUNC_TABLE.key? y }
+    if x[-2..] == SPECIAL_STRING_SUFFIX then x                               # 純粋文字列 :s
+    elsif x[0] == FUNCTION_DEF_PREFIX   then @env[name] = pop_raise; name    # 関数束縛
+    elsif x[0] == VARIABLE_DEF_PREFIX   then @env[name] = parse_array pop_raise, true; em ? name : nil
+    elsif @env[x].is_a?(Array)          then              parse_array co, em # (2) code の最後かつ関数なら実行する
+    elsif true                          then @env[x]                         # x が変数名
     end
   end
 end
