@@ -28,7 +28,7 @@ module Const
     'length' => :length,
     'chr'    => :chr,
     'up_p'   => :up_p,
-    '?'      => :my_if
+    '?'      => :my_if_and
   }.freeze
 
   ERROR_MESSAGES = {
@@ -63,7 +63,7 @@ module Const
   def chr       = (@stack.push common(1).chr)
   def up_p      = (y1, y2, y3 = common(3); y3[y2] += y1; @stack.push y3)
   def index     = (y1, y2 = common(2); @stack.push y2.is_a?(Array) ? y2[y1] : "#{y2[y1]}#{SPECIAL_STRING_SUFFIX}")
-  def my_and    = my_if 2
+  def my_and    = my_if_and 2
 
   # init_common
   def init_common(count)
