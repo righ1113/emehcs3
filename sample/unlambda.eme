@@ -8,15 +8,14 @@
 ;   return (x: any) => x;
 ; 2 * 3 = 6 はあきらめた
 ; 0 (1 +)
-; i k =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` s =` ` =` ` i k =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` =` ` =` `
+; (((((((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` i k ` k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` k s k ` s `) ` ` `
 
 (>x >y >z (z y) z x) >s
 (>x >_ x)            >k
 (>x x)               >i
-; (>x >y y x) >`
+(>x x)               >`
 
 ; succ	`s``s`ksk
 ; one	` `s``s`ksk `ki
 0 (1 +)
-; i k =` ` k s k =` ` s =` ` =` ` s =` ` =` `
-i k >` ` k s k >` `
+((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `
