@@ -1,0 +1,17 @@
+; loadFile ./sample/unlambda.eme
+; 参考サイト https://blog.hapins.net/entry/2023/05/02/085042
+; case 's':
+;   return (x: any) => (y: any) => (z: any) => x(z)(y(z));
+; case 'k':
+;   return (x: any) => (_: any) => x;
+; case 'i':
+;   return (x: any) => x;
+; 2 * 3 = 6
+
+(>x >y >z (z y) z x) >s
+(>x >_ x)            >k
+(>x x)               >i
+
+; 0 (1 +)
+; i k =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` s =` ` =` ` i k =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` s =` ` =` ` k s k =` ` s =` ` =` ` =` ` =` `
+0 (1 +) i k =` `

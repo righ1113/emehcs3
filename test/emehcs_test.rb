@@ -59,11 +59,13 @@ class EmehcsTest < Minitest::Test
     code36 = '88 chr'
     code37 = '[1 2 3] 1 100 up_p'
     code38 = '0 99 ((3 3 ==) true &&) ?'
+    code39 = '7 (>x x) (>x x)'
 
     assert_equal '"c"',                (emehcs.run code34)
     assert_equal '5',                  (emehcs.run code35)
     assert_equal 'X',                  (emehcs.run code36)
     assert_equal '[1 102 3]',          (emehcs.run code37)
     assert_equal '99',                 (emehcs.run code38)
+    assert_equal '7',                  (emehcs.run code39)
   end
 end

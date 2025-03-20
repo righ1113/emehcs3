@@ -14,8 +14,9 @@
         (0 "{" -1 0  (pc 1 -) pro #) >move_pc2
           (0 "}" 1 max (pc 1 +) pro #) >move_pc1
             ((pro mar mem (pc 1 +) out bf0) (out reverse) (pc max ==) ?) >^
-              ((move_pc2 =pc ^) ((mem_v 0 !=)  (op "}" ==) &&) ?)
-                ((move_pc1 =pc ^) ((mem_v 0 ==)  (op "{" ==) &&) ?)
+              ^
+              ((move_pc2 =pc ^)  ((mem_v 0 !=) (op "}" ==) &&) ?)
+                ((move_pc1 =pc ^)  ((mem_v 0 ==) (op "{" ==) &&) ?)
                   (((out (mem_v chr) cons) =out ^) (op "." ==)     ?)
                     (((mem mar -1 up_p)      =mem ^) (op "-" ==)     ?)
                       (((mem mar 1 up_p)       =mem ^) (op "+" ==)     ?)

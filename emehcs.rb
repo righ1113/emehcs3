@@ -44,11 +44,11 @@ class Emehcs < EmehcsBase
       end; parse_run xs
     end
   end
-  private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
+  private def parse_array(x, em) = (p "code:#{x}, em:#{em}"; em && func?(x) ? parse_run(x) : x)
   private def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
     db.each { |y| (em ? send(EMEHCS_FUNC_TABLE[y]) : @stack.push(y); return nil) if EMEHCS_FUNC_TABLE.key? y }
-    if x[-2..] == SPECIAL_STRING_SUFFIX then x                               # 純粋文字列 :s
-    elsif x[0] == FUNCTION_DEF_PREFIX   then @env[name] = pop_raise; name    # 関数束縛
+    if x[-2..] == SPECIAL_STRING_SUFFIX then x # 純粋文字列 :s
+    elsif x[0] == FUNCTION_DEF_PREFIX   then @env[name] = pop_raise; p "n:#{name}, e:#{@env[name]}"; nil # 関数束縛
     elsif x[0] == VARIABLE_DEF_PREFIX   then @env[name] = parse_array(pop_raise, true); em_n_nil(em, name)
     elsif @env[x].is_a?(Array)          then              parse_array co, em # code の最後かつ関数なら実行する
     elsif true                          then @env[x]                         # x が変数名
