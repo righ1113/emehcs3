@@ -25,6 +25,7 @@ class Repl
       @emehcs_obj.run(c)
       # puts s
     end
+    self
   end
 
   def repl

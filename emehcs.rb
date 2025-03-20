@@ -55,4 +55,4 @@ class Emehcs < EmehcsBase
     end
   end
 end
-(repl = Repl.new(Emehcs.new); repl.prelude; repl.repl) if __FILE__ == $PROGRAM_NAME # メイン関数としたもの
+Repl.new(Emehcs.new).prelude.repl if __FILE__ == $PROGRAM_NAME # メイン関数としたもの
