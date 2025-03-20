@@ -1,3 +1,5 @@
+; loadFile ./sample/fib.eme
+
 (=n =a0 =a1 (a0 a1 +) =b (b a1 (n 1 -) fib) a1 (n 1 ==) ?) >fib
 
 1 0 12 fib
