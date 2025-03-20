@@ -38,7 +38,7 @@ module Parse2Core
     end
   end
 
-  def run_after(str)
+  def run_after(code, str = code.to_s)
     str2 = str.gsub(/ ?:q/, '').gsub(',', '').gsub('%', ' ')
     if /"/ !~ str2 && /:s/ =~ str2
       str2.gsub(':s', '').gsub(/(.+)/, '"\1"') # 単独文字列

@@ -18,8 +18,8 @@ class EmehcsBase
   include Const
   private def initialize = (@env = { 'true' => 'true', 'false' => 'false' }; @stack = [])
   private def common(count, values = init_common(count))
-    values.map! { |y| func?(y) ? parse_run(y) : y } # スタックから count 個の要素を取り出して、評価する(実際に値を使用する前段階)
-    count == 1 ? values.first : values # count が 1 なら最初の要素を返す
+    values.map! { |y| func?(y) ? parse_run(y) : y } # スタックから count 個の要素を取り出して評価する(実際に値を使用する前段階)
+    count == 1 ? values.first : values              # count が 1 なら最初の要素を返す
   end
   private def my_if_and(count = 3, values = init_common(count))
     else_c = Delay.new { count == 3 ? parse_run([values[2]]) : 'false' }
@@ -30,7 +30,7 @@ end
 # Emehcs クラス 相互に呼び合っているから、継承
 class Emehcs < EmehcsBase
   include Parse2Core
-  public def run(str_code) = (@stack = []; run_after(parse_run(parse2_core(str_code)).to_s))
+  public def run(str_code) = (@stack = []; run_after parse_run parse2_core str_code)
   public def parse_run(code)
     case code   # メインルーチンの改善、code は Array
     in [] then @stack.pop
@@ -49,7 +49,7 @@ class Emehcs < EmehcsBase
     db.each { |y| (em ? send(EMEHCS_FUNC_TABLE[y]) : @stack.push(y); return nil) if EMEHCS_FUNC_TABLE.key? y }
     if x[-2..] == SPECIAL_STRING_SUFFIX then x                               # 純粋文字列 :s
     elsif x[0] == FUNCTION_DEF_PREFIX   then @env[name] = pop_raise; name    # 関数束縛
-    elsif x[0] == VARIABLE_DEF_PREFIX   then @env[name] = parse_array pop_raise, true; em ? name : nil
+    elsif x[0] == VARIABLE_DEF_PREFIX   then @env[name] = parse_array(pop_raise, true); em_n_nil(em, name)
     elsif @env[x].is_a?(Array)          then              parse_array co, em # code の最後かつ関数なら実行する
     elsif true                          then @env[x]                         # x が変数名
     end

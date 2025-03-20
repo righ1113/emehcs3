@@ -74,11 +74,13 @@ module Const
   end
 
   # pop_raise
-  def pop_raise      = (pr = @stack.pop; raise ERROR_MESSAGES[:insufficient_args] if pr.nil?; pr)
+  def pop_raise          = (pr = @stack.pop; raise ERROR_MESSAGES[:insufficient_args] if pr.nil?; pr)
   # func?
-  def func?(x)       = x.is_a?(Array) && x.last != :q
+  def func?(x)           = x.is_a?(Array) && x.last != :q
   # my_push
-  def my_ack_push(x) = x.nil? ? nil : @stack.push(x)
+  def my_ack_push(x)     = x.nil? ? nil : @stack.push(x)
+  # em_n_nil
+  def em_n_nil(em, name) = em ? name : nil
 
   # Const クラス
   class Const
