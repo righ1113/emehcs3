@@ -51,7 +51,7 @@ class Emehcs < EmehcsBase
     elsif x[0] == FUNCTION_DEF_PREFIX          # 関数束縛
       @env[name] = parse_array(pop_raise, false)
       # p "n:#{name}, e:#{@env[name]}"
-      nil
+      em_n_nil(em, name)
     elsif x[0] == VARIABLE_DEF_PREFIX
       @env[name] = parse_array(pop_raise, true)
       em_n_nil(em, name)
