@@ -1,16 +1,14 @@
 # frozen_string_literal: true
 
-# ・以下は1回だけおこなう
+# ＜以下は1回だけおこなう＞
 # rbenv で Ruby 3.3.5(じゃなくてもいい) を入れる
 # $ gem install bundler
 # $ cd emehcs3
 # $ bundle install --path=vendor/bundle
-
-# ・実行方法
+# ＜実行方法＞
 # $ cd emehcs3
 # $ RUBY_THREAD_VM_STACK_SIZE=100000000 bundle exec ruby emehcs.rb
-# > [ctrl]+D か exit で終了
-
+# > [Ctrl+D] か exit で終了
 require './lib/const'
 require './lib/parse2_core'
 require './lib/repl'
@@ -18,13 +16,11 @@ require './lib/repl'
 # EmehcsBase クラス
 class EmehcsBase
   include Const
-  def initialize = (@env = { 'true' => 'true', 'false' => 'false' }; @stack = [])
-
+  private def initialize = (@env = { 'true' => 'true', 'false' => 'false' }; @stack = [])
   private def common(count, values = init_common(count))
     values.map! { |y| func?(y) ? parse_run(y) : y } # スタックから count 個の要素を取り出して、評価する(実際に値を使用する前段階)
     count == 1 ? values.first : values # count が 1 なら最初の要素を返す
   end
-
   private def my_if_and(count = 3, values = init_common(count))
     else_c = Delay.new { count == 3 ? parse_run([values[2]]) : 'false' }
     @stack.push parse_run([values[0]]) == 'true' ? parse_run([values[1]]) : else_c.force
@@ -34,9 +30,8 @@ end
 # Emehcs クラス 相互に呼び合っているから、継承
 class Emehcs < EmehcsBase
   include Parse2Core
-  def run(str_code) = (@stack = []; run_after(parse_run(parse2_core(str_code)).to_s))
-
-  def parse_run(code)
+  public def run(str_code) = (@stack = []; run_after(parse_run(parse2_core(str_code)).to_s))
+  public def parse_run(code)
     case code   # メインルーチンの改善、code は Array
     in [] then @stack.pop
     in [x, *xs] # each_with_index 使ったら、再帰がよけい深くなった
@@ -46,13 +41,10 @@ class Emehcs < EmehcsBase
       in String  then my_ack_push parse_string x, xs.empty?
       in Symbol  then nil # do nothing
       else            raise ERROR_MESSAGES[:unexpected_type]
-      end
-      parse_run xs
+      end; parse_run xs
     end
   end
-
   private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
-
   private def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
     db.each { |y| (em ? send(EMEHCS_FUNC_TABLE[y]) : @stack.push(y); return nil) if EMEHCS_FUNC_TABLE.key? y }
     if x[-2..] == SPECIAL_STRING_SUFFIX then x                               # 純粋文字列 :s
@@ -63,10 +55,4 @@ class Emehcs < EmehcsBase
     end
   end
 end
-
-if __FILE__ == $PROGRAM_NAME # メイン関数としたもの
-  emehcs = Emehcs.new
-  repl = Repl.new emehcs
-  repl.prelude
-  repl.repl
-end
+(repl = Repl.new(Emehcs.new); repl.prelude; repl.repl) if __FILE__ == $PROGRAM_NAME # メイン関数としたもの
