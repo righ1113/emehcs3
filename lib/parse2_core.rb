@@ -27,10 +27,15 @@ module Parse2Core
       in '(' then xs2, acc2 = parse2_sub(xs, []); parse2_sub(xs2, acc + [acc2])
       in ')' then [xs, acc]
       else
-        if /\A[-+]?\d+\z/ =~ x
+        case x
+        when /\A[-+]?\d+\z/
           parse2_sub xs, acc + [x.to_i] # 数値
-        elsif x == ':q'
+        when ':q'
           parse2_sub xs, acc + [:q]     # リストのしるし
+        when 'true'
+          parse2_sub xs, acc + [true]
+        when 'false'
+          parse2_sub xs, acc + [false]
         else
           parse2_sub xs, acc + [x]
         end

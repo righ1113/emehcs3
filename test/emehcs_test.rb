@@ -17,7 +17,7 @@ class EmehcsTest < Minitest::Test
     code5  = [['=x', [1, 8, '+']], '>fact', 4, 'fact']
     code6  = [['=x', 'x'], '>id', 4, 'id']
     code7  = [['=x', [1, 'x', '+']], '>fact', 4, 'fact']
-    code8  = [['=x', [[['x', 1, '-'], 'fact'], 'x', '*'], 1, 'true', '?'], '>fact', 4, 'fact']
+    code8  = [['=x', [[['x', 1, '-'], 'fact'], 'x', '*'], 1, true, '?'], '>fact', 4, 'fact']
     code9  = [['=x', [[['x', 1, '-'], 'fact'], 'x', '*'], 1, ['x', 1, '<'], '?'], '>fact', 4, 'fact']
     code10 = [5, 'fact']
     code11 = [[1, 2, 3, :q], 'id']
