@@ -8,7 +8,7 @@
 ;   return (x: any) => x;
 ; 2 * 3 = 6 はあきらめた
 ; 0 (1 +)
-; (((((((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` i k ` k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` k s k ` s `) ` ` `
+; ((((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` ((((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` (k (s k `) s `)) ` ` `
 
 (>x >y >z (z y) z x) >s
 (>x >_ x)            >k
