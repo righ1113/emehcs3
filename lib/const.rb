@@ -4,7 +4,7 @@
 module Const
   READLINE_HIST_FILE = './data/.readline_history'
   PRELUDE_FILE       = './data/prelude.eme'
-  EMEHCS_VERSION     = 'emehcs version 0.2.2'
+  EMEHCS_VERSION     = 'emehcs version 0.2.5'
   EMEHCS_FUNC_TABLE  = {
     '+'      => :plus,
     '-'      => :minus,
@@ -39,7 +39,6 @@ module Const
   SPECIAL_STRING_SUFFIX = ':s'
   FUNCTION_DEF_PREFIX   = '>'
   VARIABLE_DEF_PREFIX   = '='
-  TRUE_FALSE_VALUES     = %w[true false].freeze
 
   PREFIX_TABLE = {
     FUNCTION_DEF_PREFIX => false,
@@ -48,21 +47,21 @@ module Const
 
   # primitive functions
   def plus      = common(2).reduce(:+)
-  def minus     = (y1, y2 = common(2); y2 - y1)
   def mul       = common(2).reduce(:*)
+  def minus     = (y1, y2 = common(2); y2 -  y1)
   def div       = (y1, y2 = common(2); y2 /  y1)
   def mod       = (y1, y2 = common(2); y2 %  y1)
   def lt        = (y1, y2 = common(2); y2 <  y1)
   def eq        = (y1, y2 = common(2); y2 == y1)
   def ne        = (y1, y2 = common(2); y2 != y1)
   def s_append  = (y1, y2 = common(2); y1[0..-3] + y2)
-  def my_sample = common(1)[0..-2].sample
-  def error     = raise common(1).to_s[0..-3]
+  def my_sample = common(1)[..-2].sample
+  def error     = raise common(1).to_s[..-3]
   def car       = common(1)[0]
   def cdr       = common(1)[1..]
   def cons      = (y1, y2 = common(2); [y1] + y2)
-  def cmd       = (y1 = common(1); system(y1[0..-3].gsub('%', ' ')); $?)
-  def eval      = (y1 = common(1); @code_len = 0; parse_run(y1[0..-2]))
+  def cmd       = (y1 = common(1); system(y1[..-3].gsub('%', ' ')); $?)
+  def eval      = (y1 = common(1); @code_len = 0; parse_run(y1[..-2]))
   def eq2       = (y1, y2 = common(2); run_after(y2.to_s) == run_after(y1.to_s))
   def length    = (common(1).length - 2)
   def chr       = common(1).chr

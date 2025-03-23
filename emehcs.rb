@@ -30,7 +30,7 @@ end
 # Emehcs クラス 相互に呼び合っているから、継承
 class Emehcs < EmehcsBase
   include Parse2Core
-  public def run(str_code) = (@stack = []; run_after parse_run parse2_core str_code)
+  public def run(str_code, _dmy = @stack.clear) = (run_after parse_run parse2_core str_code)
   public def parse_run(code)
     case code   # メインルーチンの改善、code は Array
     in [] then @stack.pop
