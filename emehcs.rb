@@ -47,16 +47,12 @@ class Emehcs < EmehcsBase
   private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
   private def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
     db.each { |y| return em ? send(EMEHCS_FUNC_TABLE[y]) : y if EMEHCS_FUNC_TABLE.key? y }
-    if x[-2..] == SPECIAL_STRING_SUFFIX then x # 純粋文字列 :s
-    elsif x[0] == FUNCTION_DEF_PREFIX          # 関数束縛
-      @env[name] = parse_array(pop_raise, false)
-      # p "n:#{name}, e:#{@env[name]}"
+    if x[-2..] == SPECIAL_STRING_SUFFIX then x                      # 純粋文字列 :s
+    elsif [FUNCTION_DEF_PREFIX, VARIABLE_DEF_PREFIX].include?(x[0]) # 関数束縛と変数束縛
+      @env[name] = parse_array(pop_raise, PREFIX_TABLE[x[0]])
       em_n_nil(em, name)
-    elsif x[0] == VARIABLE_DEF_PREFIX
-      @env[name] = parse_array(pop_raise, true)
-      em_n_nil(em, name)
-    elsif @env[x].is_a?(Array)          then parse_array co, em # code の最後かつ関数なら実行する
-    elsif true                          then @env[x]            # x が変数名
+    elsif @env[x].is_a?(Array)          then parse_array co, em     # code の最後かつ関数なら実行する
+    elsif true                          then @env[x]                # x が変数名
     end
   end
 end

@@ -41,6 +41,11 @@ module Const
   VARIABLE_DEF_PREFIX   = '='
   TRUE_FALSE_VALUES     = %w[true false].freeze
 
+  PREFIX_TABLE = {
+    FUNCTION_DEF_PREFIX => false,
+    VARIABLE_DEF_PREFIX => true
+  }.freeze
+
   # primitive functions
   def plus      = common(2).reduce(:+)
   def minus     = (y1, y2 = common(2); y2 - y1)
