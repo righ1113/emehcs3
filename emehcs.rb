@@ -23,7 +23,7 @@ class EmehcsBase
   end
   private def my_if_and(count = 3, values = init_common(count))
     else_c = Delay.new { count == 3 ? parse_run([values[2]]) : false }
-    @stack.push parse_run([values[0]]) ? parse_run([values[1]]) : else_c.force
+    parse_run([values[0]]) ? parse_run([values[1]]) : else_c.force
   end
 end
 
@@ -46,7 +46,7 @@ class Emehcs < EmehcsBase
   end
   private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
   private def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
-    db.each { |y| (em ? send(EMEHCS_FUNC_TABLE[y]) : @stack.push(y); return nil) if EMEHCS_FUNC_TABLE.key? y }
+    db.each { |y| return em ? send(EMEHCS_FUNC_TABLE[y]) : y if EMEHCS_FUNC_TABLE.key? y }
     if x[-2..] == SPECIAL_STRING_SUFFIX then x # 純粋文字列 :s
     elsif x[0] == FUNCTION_DEF_PREFIX          # 関数束縛
       @env[name] = parse_array(pop_raise, false)
