@@ -6,17 +6,13 @@
 ;   return (x: any) => (_: any) => x;
 ; case 'i':
 ;   return (x: any) => x;
-; 2 * 3 = 6 はあきらめた
-; 0 (1 +)
-; ((((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` ((((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `) ` (k (s k `) s `)) ` ` `
 
-(>x >y >z (z y) z x) >s
-(>x >_ x)            >k
-(>x x)               >i
-(>x >y y x)               >`
+; (>x >y >z (z y) z x) >s
+; (>x >_ x)            >k
+; (>x x)               >i
+; (>x >y y x)               >`
 
 ; succ	`s``s`ksk
 ; one	` `s``s`ksk `ki
-0 (1 +)
-; ((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `
-((i k `) (k (((s k `) s) s))) (k (((s k `) s) s)) (k (((s k `) s) s))
+; 2 * 3 = 6
+0 INC I K ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` I K ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` K S K ` S ` ` ` ` ` `

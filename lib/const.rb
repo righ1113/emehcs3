@@ -6,29 +6,33 @@ module Const
   PRELUDE_FILE       = './data/prelude.eme'
   EMEHCS_VERSION     = 'emehcs version 0.2.5'
   EMEHCS_FUNC_TABLE  = {
-    '+'      => :plus,
-    '-'      => :minus,
-    '*'      => :mul,
-    '/'      => :div,
-    'mod'    => :mod,
-    '<'      => :lt,
-    '=='     => :eq,
-    '!='     => :ne,
-    '&&'     => :my_and,
-    'cons'   => :cons,
-    's.++'   => :s_append,
-    'sample' => :my_sample,
-    'error'  => :error,
-    'car'    => :car,
-    'cdr'    => :cdr,
-    'cmd'    => :cmd,
-    'eval'   => :eval,
-    'eq2'    => :eq2,
-    '!!'     => :index,
-    'length' => :length,
-    'chr'    => :chr,
-    'up_p'   => :up_p,
-    '?'      => :my_if_and
+    '+'        => :plus,
+    '-'        => :minus,
+    '*'        => :mul,
+    '/'        => :div,
+    'mod'      => :mod,
+    '<'        => :lt,
+    '=='       => :eq,
+    '!='       => :ne,
+    '&&'       => :my_and,
+    'cons'     => :cons,
+    's.++'     => :s_append,
+    'sample'   => :my_sample,
+    'error'    => :error,
+    'car'      => :car,
+    'cdr'      => :cdr,
+    'cmd'      => :cmd,
+    'eval'     => :eval,
+    'eq2'      => :eq2,
+    '!!'       => :index,
+    'length'   => :length,
+    'chr'      => :chr,
+    'up_p'     => :up_p,
+    '?'        => :my_if_and,
+    'S'        => :un_s,
+    'K'        => :un_k,
+    'I'        => :un_i,
+    'INC'      => :un_inc
   }.freeze
 
   ERROR_MESSAGES = {
@@ -68,6 +72,10 @@ module Const
   def up_p      = (y1, y2, y3 = common(3); y3[y2] += y1; y3)
   def index     = (y1, y2 = common(2); y2.is_a?(Array) ? y2[y1] : "#{y2[y1]}#{SPECIAL_STRING_SUFFIX}")
   def my_and    = my_if_and 2
+  def un_s      = ->(f) { ->(g) { ->(x) { f[x][g[x]] } } }
+  def un_k      = ->(x) { ->(_y) { x } }
+  def un_i      = ->(x) { x }
+  def un_inc    = ->(x) { x + 1 }
 
   # init_common
   def init_common(count)

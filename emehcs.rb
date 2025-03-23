@@ -25,6 +25,11 @@ class EmehcsBase
     else_c = Delay.new { count == 3 ? parse_run([values[2]]) : false }
     parse_run([values[0]]) ? parse_run([values[1]]) : else_c.force
   end
+  private def un_apply
+    inp = common 2
+    # p "#{inp[0]}, #{inp[1]}"
+    inp[0][inp[1]]
+  end
 end
 
 # Emehcs クラス 相互に呼び合っているから、継承
@@ -46,6 +51,9 @@ class Emehcs < EmehcsBase
   end
   private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
   private def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
+    return send(EMEHCS_FUNC_TABLE[x]) if ['S', 'K', 'I', 'INC'].include?(x)
+    return un_apply if x == '`'
+
     db.each { |y| return em ? send(EMEHCS_FUNC_TABLE[y]) : y if EMEHCS_FUNC_TABLE.key? y }
     if x[-2..] == SPECIAL_STRING_SUFFIX then x                      # 純粋文字列 :s
     elsif [FUNCTION_DEF_PREFIX, VARIABLE_DEF_PREFIX].include?(x[0]) # 関数束縛と変数束縛
