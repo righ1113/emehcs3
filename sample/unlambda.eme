@@ -19,4 +19,4 @@
 ; one	` `s``s`ksk `ki
 0 (1 +)
 ; ((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `
-(i k `) (k ((s k `) s `) `)
+((i k `) (k (((s k `) s) s))) (k (((s k `) s) s)) (k (((s k `) s) s))
