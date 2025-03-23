@@ -13,9 +13,10 @@
 (>x >y >z (z y) z x) >s
 (>x >_ x)            >k
 (>x x)               >i
-(>x x)               >`
+(>x >y y x)               >`
 
 ; succ	`s``s`ksk
 ; one	` `s``s`ksk `ki
 0 (1 +)
-((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `
+; ((i k `) k s k ` s ` ` s `) ` k s k ` s ` ` s `
+(i k `) (k ((s k `) s `) `)
