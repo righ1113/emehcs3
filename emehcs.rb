@@ -43,16 +43,17 @@ class Emehcs < EmehcsBase
       case x
       in Integer | TrueClass | FalseClass then @stack.push x
       in Array                            then @stack.push parse_array  x, xs.empty?
-      in String                           then my_ack_push parse_string x, xs.empty?
+      in String                           then my_ack_push parse_string x, xs
       in Symbol                           then nil # do nothing
       else                                raise ERROR_MESSAGES[:unexpected_type]
       end; parse_run xs
     end
   end
   private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
-  private def parse_string(x, em, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
-    return send(EMEHCS_FUNC_TABLE[x]) if ['S', 'K', 'I', 'INC'].include?(x)
-    return un_apply if x == '`'
+  private def parse_string(x, xs, em = xs.empty?, name = x[1..], db = [x, @env[x]], co = Const.deep_copy(@env[x]))
+    return send(EMEHCS_FUNC_TABLE[x]) if ['S', 'K', 'I', 'INC', 'R'].include?(x)
+    return un_apply        if x == '`'
+    return un_dot xs.shift if x == '.'
 
     db.each { |y| return em ? send(EMEHCS_FUNC_TABLE[y]) : y if EMEHCS_FUNC_TABLE.key? y }
     if x[-2..] == SPECIAL_STRING_SUFFIX then x                      # 純粋文字列 :s

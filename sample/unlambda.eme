@@ -15,4 +15,11 @@
 ; succ	`s``s`ksk
 ; one	` `s``s`ksk `ki
 ; 2 * 3 = 6
-0 INC I K ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` I K ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` K S K ` S ` ` ` ` ` `
+0 INC
+  I K ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` I K ` K S K ` S ` ` S ` ` K S K ` S ` ` S ` ` K S K ` S ` ` ` `
+` ` |
+
+; hello world  . H ` が一組
+0
+  I . d . l . r . o . w . o . l . l . e . H ` ` ` ` ` ` ` ` ` ` R `
+`

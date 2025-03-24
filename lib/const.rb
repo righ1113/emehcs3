@@ -32,7 +32,8 @@ module Const
     'S'        => :un_s,
     'K'        => :un_k,
     'I'        => :un_i,
-    'INC'      => :un_inc
+    'INC'      => :un_inc,
+    'R'        => :un_r
   }.freeze
 
   ERROR_MESSAGES = {
@@ -76,6 +77,8 @@ module Const
   def un_k      = ->(x) { ->(_y) { x } }
   def un_i      = ->(x) { x }
   def un_inc    = ->(x) { x + 1 }
+  def un_dot(c) = ->(x) { print c; x }
+  def un_r      = ->(x) { puts; x }
 
   # init_common
   def init_common(count)
