@@ -50,6 +50,20 @@ module Const
     VARIABLE_DEF_PREFIX => true
   }.freeze
 
+  private
+
+  def init_common(count)
+    values = Array.new(count) { @stack.pop }
+    raise ERROR_MESSAGES[:insufficient_args] if values.any?(&:nil?)
+
+    values
+  end
+
+  def common(count, values = init_common(count))
+    values.map! { |y| func?(y) ? parse_run(y) : y } # スタックから count 個の要素を取り出して評価する(実際に値を使用する前段階)
+    count == 1 ? values.first : values # count が 1 なら最初の要素を返す
+  end
+
   # primitive functions
   def plus      = common(2).reduce(:+)
   def mul       = common(2).reduce(:*)
@@ -79,14 +93,6 @@ module Const
   def un_inc    = ->(x) { x + 1 }
   def un_dot(c) = ->(x) { print c; x }
   def un_r      = ->(x) { puts; x }
-
-  # init_common
-  def init_common(count)
-    values = Array.new(count) { @stack.pop }
-    raise ERROR_MESSAGES[:insufficient_args] if values.any?(&:nil?)
-
-    values
-  end
 
   # pop_raise
   def pop_raise          = (pr = @stack.pop; raise ERROR_MESSAGES[:insufficient_args] if pr.nil?; pr)

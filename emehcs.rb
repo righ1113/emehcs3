@@ -17,10 +17,6 @@ require './lib/repl'
 class EmehcsBase
   include Const
   private def initialize = (@env = {}; @stack = [])
-  private def common(count, values = init_common(count))
-    values.map! { |y| func?(y) ? parse_run(y) : y } # スタックから count 個の要素を取り出して評価する(実際に値を使用する前段階)
-    count == 1 ? values.first : values              # count が 1 なら最初の要素を返す
-  end
   private def my_if_and(count = 3, values = init_common(count))
     else_c = Delay.new { count == 3 ? parse_run([values[2]]) : false }
     parse_run([values[0]]) ? parse_run([values[1]]) : else_c.force
