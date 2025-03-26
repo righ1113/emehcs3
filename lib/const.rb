@@ -52,16 +52,21 @@ module Const
 
   private
 
+  # スタック操作のためのインターフェースを定義
+  def stack_pop         = @stack.pop
+  def stack_push(value) = @stack.push(value)
+  def stack_clear       = @stack.clear
+
   def init_common(count)
-    values = Array.new(count) { @stack.pop }
+    values = Array.new(count) { stack_pop }
     raise ERROR_MESSAGES[:insufficient_args] if values.any?(&:nil?)
 
     values
   end
 
   def common(count, values = init_common(count))
-    values.map! { |y| func?(y) ? parse_run(y) : y } # スタックから count 個の要素を取り出して評価する(実際に値を使用する前段階)
-    count == 1 ? values.first : values # count が 1 なら最初の要素を返す
+    values.map! { |y| func?(y) ? parse_run(y) : y } # count 個の要素を map して評価する(実際に値を使用する前段階)
+    count == 1 ? values.first : values              # count が 1 なら最初の要素を返す
   end
 
   # primitive functions
@@ -80,7 +85,7 @@ module Const
   def cdr       = common(1)[1..]
   def cons      = (y1, y2 = common(2); [y1] + y2)
   def cmd       = (y1 = common(1); system(y1[..-3].gsub('%', ' ')); $?)
-  def eval      = (y1 = common(1); @code_len = 0; parse_run(y1[..-2]))
+  def eval      = (y1 = common(1); parse_run(y1[..-2]))
   def eq2       = (y1, y2 = common(2); run_after(y2.to_s) == run_after(y1.to_s))
   def length    = (common(1).length - 2)
   def chr       = common(1).chr
@@ -94,13 +99,10 @@ module Const
   def un_dot(c) = ->(x) { print c; x }
   def un_r      = ->(x) { puts; x }
 
-  # pop_raise
-  def pop_raise          = (pr = @stack.pop; raise ERROR_MESSAGES[:insufficient_args] if pr.nil?; pr)
-  # func?
+  # utility
+  def pop_raise          = (pr = stack_pop; raise ERROR_MESSAGES[:insufficient_args] if pr.nil?; pr)
   def func?(x)           = x.is_a?(Array) && x.last != :q
-  # my_push
-  def my_ack_push(x)     = x.nil? ? nil : @stack.push(x)
-  # em_n_nil
+  def my_ck_push(x)      = x.nil? ? nil : stack_push(x)
   def em_n_nil(em, name) = em ? name : nil
 
   # Const クラス

@@ -31,15 +31,15 @@ end
 # Emehcs クラス 相互に呼び合っているから、継承
 class Emehcs < EmehcsBase
   include Parse2Core
-  public def run(str_code, _dmy = @stack.clear) = (run_after parse_run parse2_core str_code)
+  public def run(str_code, _dmy = stack_clear) = (run_after parse_run parse2_core str_code)
   public def parse_run(code)
     case code   # メインルーチンの改善、code は Array
-    in [] then @stack.pop
+    in [] then stack_pop
     in [x, *xs] # each_with_index 使ったら、再帰がよけい深くなった
       case x
-      in Integer | TrueClass | FalseClass then @stack.push x
-      in Array                            then @stack.push parse_array  x, xs.empty?
-      in String                           then my_ack_push parse_string x, xs, x[0], x[1..]
+      in Integer | TrueClass | FalseClass then stack_push x
+      in Array                            then stack_push parse_array  x, xs.empty?
+      in String                           then my_ck_push parse_string x, xs, x[0], x[1..]
       in Symbol                           then nil # do nothing
       else                                raise ERROR_MESSAGES[:unexpected_type]
       end; parse_run xs
