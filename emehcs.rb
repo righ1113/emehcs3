@@ -26,6 +26,13 @@ class EmehcsBase
     # p "#{inp[0]}, #{inp[1]}"
     inp[0][inp[1]]
   end
+  private def parse_unlambda(x, xs)
+    if    ['S', 'K', 'I', 'INC', 'R'].include?(x) then send(EMEHCS_FUNC_TABLE[x])
+    elsif x == '`'                                then un_apply
+    elsif true                                    then un_dot xs.shift
+    end
+  end
+  private def unlambda_command?(x) = ['S', 'K', 'I', 'INC', 'R', '`', '.'].include?(x)
 end
 
 # Emehcs クラス 相互に呼び合っているから、継承
@@ -39,26 +46,24 @@ class Emehcs < EmehcsBase
       case x
       in Integer | TrueClass | FalseClass then stack_push x
       in Array                            then stack_push parse_array  x, xs.empty?
-      in String                           then my_ck_push parse_string x, xs, x[0], x[1..]
+      in String                           then my_ck_push parse_string x, xs, x[0], x[1..], x[-2..]
       in Symbol                           then nil # do nothing
       else                                raise ERROR_MESSAGES[:unexpected_type]
       end; parse_run xs
     end
   end
   private def parse_array(x, em) = em && func?(x) ? parse_run(x) : x
-  private def parse_string(x, xs, xf, name, em = xs.empty?, db = [x, @env[x]], co = Const.deep_copy(@env[x]))
-    return send(EMEHCS_FUNC_TABLE[x]) if ['S', 'K', 'I', 'INC', 'R'].include?(x)
-    return un_apply                   if x == '`'
-    return un_dot xs.shift            if x == '.'
-
-    db.each { |y| return em ? send(EMEHCS_FUNC_TABLE[y]) : y if EMEHCS_FUNC_TABLE.key? y }
-    if    x[-2..] == SPECIAL_STRING_SUFFIX then x                  # 純粋文字列 :s
-    elsif [FUNCTION_DEF_PREFIX, VARIABLE_DEF_PREFIX].include?(xf)  # 関数束縛と変数束縛
-      @env[name] = parse_array(pop_raise, PREFIX_TABLE[xf])
-      em_n_nil(em, name)
-    elsif @env[x].is_a?(Array)             then parse_array co, em # code の最後かつ関数なら実行する
-    elsif true                             then @env[x]            # x が変数名
+  private def parse_string(x, xs, xf, name, las2, em = xs.empty?, db = [x, @env[x]], co = Const.deep_copy(@env[x]))
+    if    unlambda_command?(x)          then parse_unlambda(x, xs)      # Unlambda
+    elsif las2 == SPECIAL_STRING_SUFFIX then x                          # 純粋文字列 :s
+    elsif prefix?(x, xf)                then parse_prefix(xf, name, em) # 関数束縛と変数束縛
+    elsif @env[x].is_a?(Array)          then parse_array co, em         # code の最後かつ関数なら実行する
+    elsif !@env[x].nil?                 then @env[x]                    # x が変数名
+    else
+      db.each { |y| return em ? send(EMEHCS_FUNC_TABLE[y]) : y if EMEHCS_FUNC_TABLE.key? y } # primitive
     end
   end
+  private def prefix?(x, xf)             = x != '==' && [FUNCTION_DEF_PREFIX, VARIABLE_DEF_PREFIX].include?(xf)
+  private def parse_prefix(xf, name, em) = (@env[name] = parse_array(pop_raise, PREFIX_TABLE[xf]); em_n_nil(em, name))
 end
 Repl.new(Emehcs.new).prelude.repl if __FILE__ == $PROGRAM_NAME # メイン関数としたもの
