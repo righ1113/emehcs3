@@ -36,6 +36,7 @@ module Const
     'R'        => :un_r,
     'push'     => :my_push,
     'pop'      => :my_pop,
+    'pop_l'    => :my_pop_l,
     'env'      => :env,
     'set_env'  => :set_env,
     'int?'     => :int?,
@@ -107,6 +108,7 @@ module Const
   def un_r      = ->(x) { puts; x }
   def my_push   = @stack2.push(common(1))
   def my_pop    = @stack2.pop
+  def my_pop_l  = (y = @stack2.pop; y.is_a?(Array) ? y : [y, :q])
   def env       = @env2[common(1)]
   def set_env   = (y1, y2 = common(2); @env2[y2] = y1)
   def int?      = (y = common(1); puts "---- int=#{y}, #{y.is_a?(Integer)}"; y.is_a?(Integer))
