@@ -1,5 +1,5 @@
 ; > loadFile ./sample/emehcs.eme
-
+; 変数のスコープを付けなくてはならない事が分かった -> しかし再帰でじゃんじゃん増えてしまう
 ((pop) =y1 (pop) =y2 ((y2 y1 +) push)) >plus
 ((pop_l emehcs) =y1 (pop_l emehcs) =y2 ((y2 y1 -) push)) >minus
 ((pop_l emehcs) =y1 (pop_l emehcs) =y2 ((y2 y1 ==) push)) >eq
