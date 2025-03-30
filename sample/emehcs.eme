@@ -1,0 +1,28 @@
+; > loadFile ./sample/emehcs.eme
+
+((pop emehcs) =y1 (pop emehcs) =y2 ((y2 y1 +) push)) >plus
+((pop emehcs) =y1 (pop emehcs) =y2 ((y2 y1 -) push)) >minus
+((pop emehcs) =y1 (pop emehcs) =y2 ((y2 y1 ==) push)) >eq
+((pop emehcs) >y1 (pop emehcs) >y2 (pop emehcs) >y3 (y3 push) (y2 push) (y1 true ==) ?) >ife
+
+(=code
+  (=y =em (y push) ((y emehcs) push) (em true ==) ?) >h_list
+    (code car) =x (code cdr) >xs (x car) >xf (x cdr) >name
+      (xs [] ==) =em
+        (xs emehcs) >^
+        ; ("Unsupported type" error)
+          (^ ((x env) push) &&)
+          ((^ (em (x env) h_list) &&)       ((x env) list?) ?)
+          ((^ (name ([pop] emehcs) set_env) &&) (xf "=" ==) ?)
+          ((^ (name pop set_env) &&)            (xf ">" ==) ?)
+            ((^ ife &&)   (x "?" ==) ?)
+            ((^ eq &&)   (x "==" ==) ?)
+            ((^ minus &&) (x "-" ==) ?)
+            ((^ plus &&)  (x "+" ==) ?)
+              ; (push (x str) ?)
+              ((^ (em x h_list) &&) (x list?) ?)
+              ((^ (x push) &&)      (x bool?) ?)
+              ((^ (x push) &&)       (x int?) ?)
+                (pop (code [] ==) ?)) >emehcs
+; [[=n =a0 =a1 [a0 a1 +] =b [b a1 [n 1 -] fib] a1 [n 1 ==] ?] >fib 1 0 12 fib] emehcs
+[100] emehcs

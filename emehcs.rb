@@ -16,7 +16,7 @@ require './lib/repl'
 # EmehcsBase クラス
 class EmehcsBase
   include Const
-  private def initialize = (@env = {}; @stack = [])
+  private def initialize = (@env = {}; @stack = []; @env2 = {}; @stack2 = [])
   private def my_if_and(count = 3, values = init_common(count))
     else_c = Delay.new { count == 3 ? parse_run([values[2]]) : false }
     parse_run([values[0]]) ? parse_run([values[1]]) : else_c.force
@@ -43,6 +43,7 @@ class Emehcs < EmehcsBase
     case code   # メインルーチンの改善、code は Array
     in [] then stack_pop
     in [x, *xs] # each_with_index 使ったら、再帰がよけい深くなった
+      puts "++++ x=#{x}, xs=#{xs}"
       case x
       in Integer | TrueClass | FalseClass then stack_push x
       in Array                            then stack_push parse_array  x, xs.empty?

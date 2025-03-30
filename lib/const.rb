@@ -33,7 +33,14 @@ module Const
     'K'        => :un_k,
     'I'        => :un_i,
     'INC'      => :un_inc,
-    'R'        => :un_r
+    'R'        => :un_r,
+    'push'     => :my_push,
+    'pop'      => :my_pop,
+    'env'      => :env,
+    'set_env'  => :set_env,
+    'int?'     => :int?,
+    'bool?'    => :bool?,
+    'list?'    => :list?
   }.freeze
 
   ERROR_MESSAGES = {
@@ -81,13 +88,13 @@ module Const
   def s_append  = (y1, y2 = common(2); y1[0..-3] + y2)
   def my_sample = common(1)[..-2].sample
   def error     = raise common(1).to_s[..-3]
-  def car       = common(1)[0]
+  def car       = (y = common(1); y.is_a?(Array) ? (puts "---- car=#{y[0]}"; y[0]) : y[0] + SPECIAL_STRING_SUFFIX)
   def cdr       = common(1)[1..]
   def cons      = (y1, y2 = common(2); [y1] + y2)
   def cmd       = (y1 = common(1); system(y1[..-3].gsub('%', ' ')); $?)
   def eval      = (y1 = common(1); parse_run(y1[..-2]))
   def eq2       = (y1, y2 = common(2); run_after(y2.to_s) == run_after(y1.to_s))
-  def length    = (common(1).length - 2)
+  def length    = (y = common(1); y.is_a?(Array) ? y.length - 1 : y.length - 2)
   def chr       = common(1).chr
   def up_p      = (y1, y2, y3 = common(3); y3[y2] += y1; y3)
   def index     = (y1, y2 = common(2); y2.is_a?(Array) ? y2[y1] : "#{y2[y1]}#{SPECIAL_STRING_SUFFIX}")
@@ -98,6 +105,13 @@ module Const
   def un_inc    = ->(x) { x + 1 }
   def un_dot(c) = ->(x) { print c; x }
   def un_r      = ->(x) { puts; x }
+  def my_push   = @stack2.push(common(1))
+  def my_pop    = @stack2.pop
+  def env       = @env2[common(1)]
+  def set_env   = (y1, y2 = common(2); @env2[y2] = y1)
+  def int?      = (y = common(1); puts "---- int=#{y}, #{y.is_a?(Integer)}"; y.is_a?(Integer))
+  def bool?     = (y = common(1); y.is_a?(TrueClass) || y.is_a?(FalseClass))
+  def list?     = common(1).is_a?(Array)
 
   # utility
   def pop_raise          = (pr = stack_pop; raise ERROR_MESSAGES[:insufficient_args] if pr.nil?; pr)
