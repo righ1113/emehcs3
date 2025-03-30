@@ -43,7 +43,6 @@ class Emehcs < EmehcsBase
     case code   # メインルーチンの改善、code は Array
     in [] then stack_pop
     in [x, *xs] # each_with_index 使ったら、再帰がよけい深くなった
-      puts "++++ x=#{x}, xs=#{xs}"
       case x
       in Integer | TrueClass | FalseClass then stack_push x
       in Array                            then stack_push parse_array  x, xs.empty?

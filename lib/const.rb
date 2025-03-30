@@ -78,7 +78,7 @@ module Const
   end
 
   # primitive functions
-  def plus      = (y1, y2 = common(2); puts "---- plus:#{y2 + y1}"; y2 + y1)
+  def plus      = (y1, y2 = common(2); y2 + y1)
   def mul       = common(2).reduce(:*)
   def minus     = (y1, y2 = common(2); y2 -  y1)
   def div       = (y1, y2 = common(2); y2 /  y1)
@@ -89,7 +89,7 @@ module Const
   def s_append  = (y1, y2 = common(2); y1[0..-3] + y2)
   def my_sample = common(1)[..-2].sample
   def error     = raise common(1).to_s[..-3]
-  def car       = (y = common(1); y.is_a?(Array) ? (puts "---- car=#{y[0]}"; y[0]) : y[0] + SPECIAL_STRING_SUFFIX)
+  def car       = (y = common(1); y.is_a?(Array) ? y[0] : y[0] + SPECIAL_STRING_SUFFIX)
   def cdr       = common(1)[1..]
   def cons      = (y1, y2 = common(2); [y1] + y2)
   def cmd       = (y1 = common(1); system(y1[..-3].gsub('%', ' ')); $?)
@@ -111,7 +111,7 @@ module Const
   def my_pop_l  = (y = @stack2.pop; y.is_a?(Array) ? y : [y, :q])
   def env       = @env2[common(1)]
   def set_env   = (y1, y2 = common(2); @env2[y2] = y1)
-  def int?      = (y = common(1); puts "---- int=#{y}, #{y.is_a?(Integer)}"; y.is_a?(Integer))
+  def int?      = (y = common(1); y.is_a?(Integer))
   def bool?     = (y = common(1); y.is_a?(TrueClass) || y.is_a?(FalseClass))
   def list?     = common(1).is_a?(Array)
 
