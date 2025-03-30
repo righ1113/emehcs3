@@ -77,7 +77,7 @@ module Const
   end
 
   # primitive functions
-  def plus      = common(2).reduce(:+)
+  def plus      = (y1, y2 = common(2); puts "---- plus:#{y2 + y1}"; y2 + y1)
   def mul       = common(2).reduce(:*)
   def minus     = (y1, y2 = common(2); y2 -  y1)
   def div       = (y1, y2 = common(2); y2 /  y1)

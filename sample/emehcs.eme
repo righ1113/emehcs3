@@ -1,9 +1,9 @@
 ; > loadFile ./sample/emehcs.eme
-
-((pop emehcs) =y1 (pop emehcs) =y2 ((y2 y1 +) push)) >plus
-((pop emehcs) =y1 (pop emehcs) =y2 ((y2 y1 -) push)) >minus
-((pop emehcs) =y1 (pop emehcs) =y2 ((y2 y1 ==) push)) >eq
-((pop emehcs) >y1 (pop emehcs) >y2 (pop emehcs) >y3 (y3 push) (y2 push) (y1 true ==) ?) >ife
+; list が要る
+(pop =y1 pop =y2 ([y1] emehcs) =y1 ([y2] emehcs) =y2 ((y2 y1 +) push)) >plus
+(([pop] emehcs) =y1 ([pop] emehcs) =y2 ((y2 y1 -) push)) >minus
+(([pop] emehcs) =y1 ([pop] emehcs) =y2 ((y2 y1 ==) push)) >eq
+(([pop] emehcs) >y1 ([pop] emehcs) >y2 ([pop] emehcs) >y3 (y3 push) (y2 push) (y1 true ==) ?) >ife
 
 (=code
   (=y =em (y push) ((y emehcs) push) (em true ==) ?) >h_list
@@ -18,11 +18,11 @@
             ((^ ife &&)   (x "?" ==) ?)
             ((^ eq &&)   (x "==" ==) ?)
             ((^ minus &&) (x "-" ==) ?)
-            ((^ plus &&)  (x "+" ==) ?)
+            ((^ plus &&)  (x "true" ==) ?)
               ; (push (x str) ?)
               ((^ (em x h_list) &&) (x list?) ?)
               ((^ (x push) &&)      (x bool?) ?)
               ((^ (x push) &&)       (x int?) ?)
                 (pop (code [] ==) ?)) >emehcs
 ; [[=n =a0 =a1 [a0 a1 +] =b [b a1 [n 1 -] fib] a1 [n 1 ==] ?] >fib 1 0 12 fib] emehcs
-[100] emehcs
+[100 7 "true"] emehcs
